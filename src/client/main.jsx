@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router, browserHistory } from 'react-router';
-import { createStore, applyMiddleware } from 'redux';
+import { compose, createStore, applyMiddleware } from 'redux';
 import { syncHistoryWithStore, routerReducer, routerMiddleware } from 'react-router-redux';
 import { createEffectCapableStore } from 'redux-side-effects';
 
@@ -11,7 +11,11 @@ import routes from './routes';
 
 import './styl/main.styl';
 
-const createStoreWithMiddleware = applyMiddleware(routerMiddleware(browserHistory))(createStore);
+const enhancers = [
+  applyMiddleware(routerMiddleware(browserHistory)),
+  typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f,
+];
+const createStoreWithMiddleware = compose.apply(null, enhancers)(createStore);
 const storeFactory = createEffectCapableStore(createStoreWithMiddleware);
 const store = storeFactory(function*(state, action) {
   return {
