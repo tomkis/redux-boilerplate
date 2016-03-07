@@ -1,3 +1,4 @@
+/*eslint no-console: 0*/
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 import SingleChild from 'single-child';
@@ -8,8 +9,8 @@ import webpackBEConfig from './webpack/webpack.backend.config.js';
 import webpackFEConfig from './webpack/webpack.frontend.config.js';
 
 const SERVER_BASE = 'http://localhost';
-const API_PORT = 3000;
-const CLIENT_PORT = 3001;
+const CLIENT_PORT = 3000;
+const API_PORT = 3001;
 
 let server = null;
 
@@ -28,7 +29,10 @@ const getDevelopmentWebpackFEConfig = webpackConfig => {
     ...webpackConfig,
     devtool: 'sourcemap',
     inline: true,
-    entry: [`webpack-dev-server/client?${SERVER_BASE}:${CLIENT_PORT}`, 'webpack/hot/only-dev-server', ...webpackConfig.entry],
+    entry: [
+      `webpack-dev-server/client?${SERVER_BASE}:${CLIENT_PORT}`,
+      'webpack/hot/only-dev-server', ...webpackConfig.entry
+    ],
     plugins: [new webpack.HotModuleReplacementPlugin()]
   };
   config.output.publicPath = `${SERVER_BASE}:${CLIENT_PORT}/`;
@@ -68,7 +72,7 @@ webpack(getDevelopmentWebpackBEConfig(webpackBEConfig), (err, stats) => {
     console.info('Starting dev runner');
     server = new SingleChild('node', ['dist/server.js'], {
       stdio: [0, 1, 2],
-      env: {...process.env, NODE_ENV: 'dev'}
+      env: {...process.env, NODE_ENV: 'development', PORT: API_PORT}
     });
     server.start();
   } else {

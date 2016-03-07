@@ -1,6 +1,8 @@
+/*eslint no-var: 0 */
 var webpack = require('webpack');
 var path = require('path');
 var fs = require('fs');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 var nodeModules = {};
 fs.readdirSync('node_modules')
@@ -12,7 +14,7 @@ fs.readdirSync('node_modules')
   });
 
 module.exports = {
-  entry: './src/server/main.js',
+  entry: './src/server/server.js',
   target: 'node',
   output: {
     path: path.join(__dirname, '../dist'),
@@ -35,10 +37,12 @@ module.exports = {
     extensions: ['', '.js']
   },
   plugins: [
+    new CopyWebpackPlugin([
+      {from: './src/server/static', to: './client'},
+      {from: './src/server/views/', to: './views'},
+    ]),
     new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false
-      }
+      compress: { warnings: false }
     })
   ]
 };

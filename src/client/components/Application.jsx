@@ -1,24 +1,31 @@
-import React, { PropTypes, Component } from 'react';
-import { Provider } from 'react-redux';
+import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
+import PureComponent from 'react-pure-render/component';
 
-import * as TestingActions from '../actions/testingActions';
-import Routes from '../Routes';
-
-export default class Application extends Component {
+class Application extends PureComponent {
 
   static propTypes = {
-    store: PropTypes.object.isRequired
-  }
-
-  componentWillMount() {
-    this.props.store.dispatch(TestingActions.applicationMounting());
+    children: PropTypes.object,
+    go: PropTypes.func,
   }
 
   render() {
-    return (
-      <Provider store={this.props.store}>
-        <Routes />
-      </Provider>
-    );
+    return <div className="container">
+      <nav>
+        <a onClick={() => {this.props.go('/foo');}}>Foo</a>
+        <a onClick={() => {this.props.go('/bar');}}>Bar</a>
+      </nav>
+      {this.props.children}
+    </div>;
   }
 }
+
+export default connect(
+  state => ({}),
+  dispatch => ({
+    go: target => {
+      dispatch(push(target));
+    }
+  })
+)(Application);

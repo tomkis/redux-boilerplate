@@ -47,87 +47,21 @@ npm run start:dev
 ```
 Navigate your browser to http://localhost:3001/
 
+## Configuration
 
-### Using immutable for redux store state
+There is `src/config` which contains production and development settings.
+Proper configurations is loaded according to `NODE_ENV` env property.
+Additionally `npm install` creates `local.js` config file which can override any
+values and it's not tracked in Git repository. Purpose of this config is
+for storing sensitive data or developer specific values.
 
-[Immutable](https://github.com/facebook/immutable-js) object
-is used for the store instead of a plain JavaScript object.
-This is against the redux specification. Because of this the
-combineReducers 
-function from
-[redux-side-effects](https://github.com/salsita/redux-side-effects#readme)
-can not be used out of the box.
-
-The use of combineReducers is inevitable for instance for the
-use of [redux-form](https://github.com/erikras/redux-form)
-in the project.
-
-Either the developer writes their own combineReducers function
-(like the [hive](https://github.com/salsita/hive) project does)
-or use the provided combineReducers function and relax the constraints
-from for instance this:
-```
-import { fromJS } from 'immutable';
-export default fromJS({
-  appState: {
-    history: null
-  },
-  effects: []
-});
-```
-to this:
-```
-import { fromJS } from 'immutable';
-export default {
-  main: fromJS({
-    appState: {
-      history: null
-    },
-    effects: []
-  })
-};
-```
-
-
-### Passing environment variables to client
-This is an example from the hive project on how an environment variable
-is passed to the client (browser-side) code.
-https://github.com/salsita/hive/blob/develop/web/webpack/webpack.frontend.config.js
-
-```
-const plugins = [
-  new webpack.DefinePlugin({
-    "process.env": {
-      HIVE_LOGIN_PAGE: JSON.stringify(process.env.HIVE_LOGIN_PAGE),
-      HIVE_LOGOUT_PAGE: JSON.stringify(process.env.HIVE_LOGOUT_PAGE)
-    }
-  })
-];
-...
-module.exports = {
-  ...
-  plugins: plugins
-};
-```
-On the client side, the variables are then accessed the same way
-as on the server side:
-```
-process.env.HIVE_LOGIN_PAGE;
-process.env.HIVE_LOGOUT_PAGE;
-```
-
+Any top-level variable in config can be also overridden by env variable.
 
 ## Quest list
- * autoprefixer-loader is deprecated. postcss-loader should be used instead.
- * In `npm run build-artefacts`, the including of the node\_modules directory
+
+ * In `npm run build-artifacts`, the including of the node\_modules directory
 should not be necessary because webpack tracks dependencies via require() statements
 and it is therefore suppossed to deliver them.
- * In router `src/client/Routes.jsx`, the default action should be to redirect
-to the root path (`/`) instead of displaying the not found page (via
-the `NotFound` component. Either check if the router allows it,
-or perhaps implement the component to dispatch an action (at some point)
-that will redirect to the root path.
-
 
 ### Hot reloading
 Hot reloading is not working properly (or at all). It may have to do with the use of devRunner.js,
@@ -142,58 +76,6 @@ For instance the book
 presents a working example.
 
 
-### Clean up webpack configuration
-There are currently four webpack configuration files which is way to many.
-There is a separate configuration file for frontend (the client),
-the backend (the server), and the development and production environment.
-
-The webpack.backend.config.js and webpack.frontend.config.js are utilized
-by webpack which is started by the babel-node in the start:dev package.json
-command (done via devRunner.js).
-
-There should be a common file for both backend and frontend to get
-rid of the duplicate configuration. Then instead of having four webpack files,
-use the process.env.npm\_lifecycle\_event to make selection between
-a production and a development build. 
-
-For instance use this in webpack.conf:
-```
-var webpack = require('webpack');
-var merge = require('webpack-merge');
-const TARGET = process.env.npm_lifecycle_event;
-const common = { // shared configuration for production and development builds };
-// ...
-if (TARGET === 'start') {
-  module.exports = merge(common, { // production but not development configuration });  
-}
-if (TARGET === 'start:dev') {
-  module.exports = merge(common, { // development but not production configuration });
-}
-```
-Where the start and start:dev commands come from package.json
-```
-{
-  "scripts": {
-    "start":     // command to start the production build
-    "start:dev": // command start the development build
-  }
-}
-```
-
-For example it usefull to have the webpack configuration to enable source maps
-for the development builds but not for the production builds. And also
-to have the production build source code minified
-([see -d and -p options](https://webpack.github.io/docs/cli.html))
-to decrease
-the network traffic and the browser application load time.
-
-
-### Better side-effects example
-
-Better side-effects example is needed. Something to show handling of success and failure
-using store reducers when exchanging data with the server.
-
-
 ## Server source code
 
 The server `src/server/main.js` source code listens for http requests on port 3000,
@@ -202,61 +84,30 @@ from the `dist/client` directory under url path `/`. It returns JSON data
 for http get request on path `/hello`. For every other url path,
 the server returns the default `index.html` page.
 
-
 ## Client source code
 
 ### Application URL router
 
-The client router `src/client/Router.jsx` shows which React component implements which url path.
+The client router `src/client/router.jsx` shows which React component implements which url path.
 For instance when the user types into a browser a url path that the server does not know
 and replies with the default `index.html` file content, the client `NotFound` React component
 will render the 404 Page Not Found in the browser.
 
-
 ### Side-effects
 
-This a simple example of a side effect from `src/client/reducers/testingReducer.js`.
-The side-effect here is the dispatch of the routerBootstrapped action. 
-```
-export function* applicationMounting(state) {
-  yield (dispatch) => {
-    dispatch(TestingActions.routerBootstrapped(history));
-  };
-
-  return state;
-}
-
-export function* routerBootstrapped(state, _history) {
-  return state.setIn(['appState', 'history'], _history);
-}
-```
+This a simple example of a side effect is in  `src/client/reducers/fooReducer.js`.
 
 ### URL history
 
 Sometimes it is needed to be able to navigate to different url path
 from a current one. Regardless of how the url path is constructed,
-the `pushState` function of the `history` object can be used
+the `push` function of the `react-router-redux`  can be used
 to instruct the browser to change to the given url path.
 The application router then gets to select the component
 to render the page based on the new url path.
 No request to the server is made.
 
-Example from `src/client/reducers/testingReducer.js`:
-```
-import createBrowserHistory from 'history/lib/createBrowserHistory';
-const history = createBrowserHistory();
-
-export function* fooClicked(state) {
-  history.pushState({}, '/foo');
-  return state;
-}
-
-export function* barClicked(state) {
-  history.pushState({}, '/bar');
-  return state;
-}
-```
-
+See example in `src/client/components/Application.jsx`:
 
 ## Favicon
 
@@ -270,7 +121,6 @@ to choose from multiple formats. Like this:
   <link rel="icon" href="favicon.png" type="image/png" /> ...
 </head>
 ```
-
 
 ## Server tests
 
@@ -302,18 +152,16 @@ This is the list of dependencies taken from the package.json file with some shor
 
 Development dependencies | Synopsis
 ------------------------ | --------
-[autoprefixer-loader](https://github.com/passy/autoprefixer-loader#readme)  | Makes require('./file.css'); to compile and add the CSS to your page.
 [babel, babel-core](https://babeljs.io)   | Latest (ES2015 and beyond) JavaScript transpiler/compiler.
 [babel-eslint](https://github.com/babel/babel-eslint)       | Allows to lint all valid Babel code with ESLlint.
 [babel-loader](https://github.com/babel/babel-loader)       | Allows transpiling JavaScript files using Babel and webpack.
 [css-loader](https://github.com/webpack/css-loader#readme)  | CSS loader for webpack.
 [eslint](http://eslint.org)   | Pluggable linting utility for JavaScript and JSX.
-[eslint-config-airbnb](https://github.com/airbnb/javascript)    | Airbnb JavaScript Style Guide.
 [eslint-loader](https://github.com/MoOx/eslint-loader#readme)   | ESLint loader for webpack
 [eslint-plugin-import](https://github.com/benmosher/eslint-plugin-import)   | ESLint plugin with support for linting of ES2015+ (ES6+) import/export syntax.
 [eslint-plugin-react](https://github.com/yannickcr/eslint-plugin-react)     | React specific linting rules for ESLint.
 [file-loader](https://github.com/webpack/file-loader)   | var url = require("file!./file.png"); // => emits file.png as file in the output directory and returns the public url
-[font-awesome](http://fontawesome.io)   | Scalable vector icons that can instantly be customized with CSS. 
+[font-awesome](http://fontawesome.io)   | Scalable vector icons that can instantly be customized with CSS.
 [font-awesome-webpack](https://github.com/gowravshekar/font-awesome-webpack)  | Font awesome configuration and loading package for webpack, using font-awesome (Less).
 [karma](http://karma-runner.github.io/0.13/index.html)  | Testing environment to make test-driven development easy.
 [karma-chai](http://xdissent.github.io/karma-chai/)     | Make the Chai assertion library available in Karma.
@@ -326,16 +174,19 @@ karma-phantomjs-launcher | x
 karma-webpack            | x
 [mocha](https://github.com/mochajs/mocha)   | JavaScript test framework for Node.js and the browser.
 [mocha-junit-reporter](https://github.com/michaelleeallen/mocha-junit-reporter#readme)  | Produces JUnit-style XML test results.
-[phantomjs](https://github.com/Medium/phantomjs)  | Scripted, headless browser used for automating web page interaction.
+[phantomjs-prebuilt](https://github.com/Medium/phantomjs)  | Scripted, headless browser used for automating web page interaction.
 [phantomjs-polyfill](https://github.com/conversocial/phantomjs-polyfill)  | This is a polyfill for function.prototype.bind which is missing from PhantomJS.
 [raw-loader](https://github.com/webpack/raw-loader)                       | var fileContent = require("raw!./file.txt"); // => returns file.txt content as string
 [react-hot-loader](https://github.com/gaearon/react-hot-loader)           | Re-render the source code changes automatically in the browser.
+[redux-devtools](https://github.com/gaearon/redux-devtools#readme)        | A live-editing time travel environment for Redux.
 [request](https://github.com/request/request#readme)                      | Simple way to make http calls with https and redirect support.
 [single-child](https://github.com/twolfson/single-child)                  | Spawn a single child process which kills itself on restart.
 [sinon](http://sinonjs.org)                                               | Standalone test spies, stubs and mocks for JavaScript.
 [sinon-chai](https://github.com/domenic/sinon-chai#readme)                | Provide sinon for use with the Chai assertion library.
 [source-map-support](https://github.com/evanw/node-source-map-support#readme) | Source map support for stack traces in node via the V8 stack trace API.
 [style-loader](https://github.com/webpack/style-loader#readme)            | Style loader for webpack.
+[stylus-loader](https://github.com/shama/stylus-loader#readme)
+| Stylus loader for webpack
 [url-loader](https://github.com/webpack/url-loader#readme)                | Url loader for webpack.
 [webpack](https://github.com/webpack/webpack)                             | Module bundler. The main purpose is to bundle JavaScript files for usage in a browser.
 [webpack-dev-server](https://github.com/webpack/webpack-dev-server)       | Serves a webpack application. Updates the browser on changes.
@@ -345,11 +196,9 @@ Dependencies            | Synopsis
 ----------------------- | --------
 [babel-runtime](https://www.npmjs.com/package/babel-runtime)    | Self-contained babel runtime.
 [bluebird](https://github.com/petkaantonov/bluebird)            | JavaScript promise library.
-[express](http://expressjs.com)     | Web application framework for Node.js. 
+[express](http://expressjs.com)     | Web application framework for Node.js.
 [history](https://github.com/rackt/history#readme)          | JavaScript library to manage session history in browsers (and testing environments).
 [immutable](https://github.com/facebook/immutable-js)       | Immutable collections for JavaScript. Immutable data cannot be changed once created.
-[invariant](https://github.com/zertosh/invariant#readme)    | Throw exception if condition is false.
-[less, less-loader](http://lesscss.org)        | CSS pre-processor. Adds variables, mixins, functions and other techniques.
 [react](https://www.npmjs.com/package/react)   | JavaScript library for user interfaces.
 [react-document-meta](https://github.com/kodyl/react-document-meta#readme)  | HTML meta tags for React-based applications.
 [react-dom](https://www.npmjs.com/package/react-dom)    | Entry point of the DOM-related rendering paths (ReactDOM.render()).
@@ -360,5 +209,3 @@ Dependencies            | Synopsis
 [redux-side-effects](https://github.com/salsita/redux-side-effects#readme)  | Redux store implementation with proper interface for asynchronous store operations.
 [serve-favicon](https://github.com/expressjs/serve-favicon) | Node.js middleware for serving a favicon.
 [serve-static](https://github.com/expressjs/serve-static)   | Node.js middleware to serve static files from withing a given root directory.
-
-

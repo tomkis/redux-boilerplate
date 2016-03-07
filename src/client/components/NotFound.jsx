@@ -1,13 +1,13 @@
-import React, {Component} from 'react';
+import React from 'react';
+import PureComponent from 'react-pure-render/component';
 
-export default class NotFound extends Component {
+export default class NotFound extends PureComponent {
   render() {
     return (
-      <div className="container">
+      <div>
         <h1>Doh! 404!</h1>
         <p>These are <em>not</em> the droids you are looking for!</p>
       </div>
     );
   }
 }
-

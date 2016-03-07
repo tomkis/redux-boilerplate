@@ -1,25 +1,19 @@
+/*eslint no-var: 0 */
 var path = require('path');
 
-module.exports = {
-  entry: [ './src/client/main.jsx'] ,
-  target: 'web',
-  output: {
-    path: path.join(__dirname, '../dist/client'),
-    filename: 'client.js'
-  },
-  module: {
-    preLoaders: [{
-      test: /\.js$/,
-      loaders: ['eslint'],
-      include: path.join(__dirname, '../src/client')
-    }],
-    loaders: [{
-      test: /\.jsx$|\.js$/,
-      loaders: ['react-hot', 'babel'],
-      include: path.join(__dirname, '../src/client')
-    }]
-  },
-  resolve: {
-    extensions: ['', '.js', '.jsx']
-  }
-};
+const config = require('./webpack.prod.frontend.config');
+
+// adding hot reload and source maps
+config.module.loaders = [{
+  test: /\.jsx$|\.js$/,
+  loaders: ['react-hot', 'babel'],
+  include: path.join(__dirname, '../src/client')
+}, {
+  test: /\.styl$/,
+  loader: 'style!css?sourceMap!stylus!postcss'
+}];
+
+//exlclude uglify
+config.plugins = [];
+
+module.exports = config;
