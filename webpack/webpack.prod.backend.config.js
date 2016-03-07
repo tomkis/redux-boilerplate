@@ -39,7 +39,8 @@ module.exports = {
   plugins: [
     new CopyWebpackPlugin([
       {from: './src/server/static', to: './client'},
-      {from: './src/server/views/', to: './views'},
+      //views are not currently used
+      //{from: './src/server/views/', to: './views'},
     ]),
     new webpack.optimize.UglifyJsPlugin({
       compress: { warnings: false }
