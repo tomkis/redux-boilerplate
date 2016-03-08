@@ -22,7 +22,7 @@ module.exports = {
       include: path.join(__dirname, '../src/client')
     }, {
       test: /\.styl$/,
-      loader: 'style!css!stylus'
+      loader: 'style!css!postcss!stylus'
     }]
   },
   resolve: {

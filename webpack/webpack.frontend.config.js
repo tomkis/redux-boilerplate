@@ -10,7 +10,7 @@ config.module.loaders = [{
   include: path.join(__dirname, '../src/client')
 }, {
   test: /\.styl$/,
-  loader: 'style!css?sourceMap!stylus!postcss'
+  loader: 'style!css?sourceMap!postcss!stylus'
 }];
 
 //exlclude uglify
