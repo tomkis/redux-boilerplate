@@ -1,8 +1,6 @@
-import { fromJS } from 'immutable';
+import Immutable from 'immutable';
 
-export default fromJS({
-  appState: {
-    history: null
-  },
-  effects: []
+export default Immutable.fromJS({
+  foo: null,
+  barCounter: 0,
 });
