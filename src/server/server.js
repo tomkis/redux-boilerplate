@@ -1,7 +1,7 @@
 import express from 'express';
 const app = express();
 
-/* uncomment if you needs templating
+/* uncomment if you need templating
 import swig from 'swig';
 
 app.set('views', 'dist/views');
@@ -18,7 +18,7 @@ app.get('/hello', (req, res) => res.json({
 }));
 
 app.use((req, res) => {
-  res.sendfile('dist/client/index.html');
+  res.sendFile('dist/client/index.html');
 });
 
 app.listen(process.env.PORT || 3000);
