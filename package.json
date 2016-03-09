@@ -10,7 +10,7 @@
   },
   "homepage": "https://www.salsitasoft.com/",
   "scripts": {
-    "postinstall": "npm run build_backend && npm run build_frontend && npm run create_local_config",
+    "postinstall": "npm run create_local_config && npm run build_backend && npm run build_frontend",
     "build_frontend": "node ./node_modules/webpack/bin/webpack.js -p --config=webpack/webpack.prod.frontend.config.js",
     "build_backend": "node ./node_modules/webpack/bin/webpack.js -p --config=webpack/webpack.prod.backend.config.js",
     "start": "node ./dist/server.js",
