@@ -1,3 +1,6 @@
+const pathConfig = require('./webpack/webpack.path.config');
+const specFileMatch = pathConfig.client + '/**/*.spec.*';
+
 module.exports = function(config) {
   config.set({
     frameworks: ['mocha', 'chai'],
@@ -5,7 +8,7 @@ module.exports = function(config) {
     reporters: ['nyan', 'junit'],
     singleRun: true,
     files: [
-      'src/client/**/*.spec.*'
+      specFileMatch
     ],
     webpack: {
       module: {
@@ -14,10 +17,18 @@ module.exports = function(config) {
           exclude: /node_modules/,
           loaders: ['babel']
         }]
+      },
+      resolve: {
+        extensions: ['', '.js', '.jsx'],
+        root: pathConfig.root,
+        alias: {
+          default: pathConfig.default,
+          theme: pathConfig.theme
+        }
       }
     },
     preprocessors: {
-      'src/client/**/*.spec.*': ['webpack']
+      [specFileMatch]: ['webpack']
     },
     plugins: [
       require('karma-webpack'),

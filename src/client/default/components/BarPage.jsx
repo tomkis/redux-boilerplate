@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import PureComponent from 'react-pure-render/component';
 import { connect } from 'react-redux';
 
-import { barClicked } from '../actions/foobarActions.js';
+import { barClicked } from 'actions/foobarActions.js';
 
 class BarPage extends PureComponent {
 

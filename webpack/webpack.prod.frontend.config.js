@@ -2,9 +2,10 @@
 var path = require('path');
 var autoprefixer = require('autoprefixer');
 var webpack = require('webpack');
+const pathConfig = require('./webpack.path.config');
 
 module.exports = {
-  entry: ['./src/client/main.jsx'],
+  entry: ['./src/client/default/main.jsx'],
   target: 'web',
   output: {
     path: path.join(__dirname, '../dist/client'),
@@ -14,19 +15,26 @@ module.exports = {
     preLoaders: [{
       test: /\.js$/,
       loaders: ['eslint'],
-      include: path.join(__dirname, '../src/client')
+      include: pathConfig.client
     }],
     loaders: [{
       test: /\.jsx$|\.js$/,
       loaders: ['babel'],
-      include: path.join(__dirname, '../src/client')
+      include: pathConfig.client
     }, {
       test: /\.styl$/,
-      loader: 'style!css!postcss!stylus'
+      // the stylus-loader resolves paths in reversed order - so reverse root
+      loader: 'style!css?sourceMap!postcss!stylus?paths[]=' + pathConfig.root.slice().reverse().join(',paths[]='),
+      include: pathConfig.client
     }]
   },
   resolve: {
-    extensions: ['', '.js', '.jsx']
+    extensions: ['', '.js', '.jsx'],
+    root: pathConfig.root,
+    alias: {
+      default: pathConfig.default,
+      theme: pathConfig.theme
+    }
   },
   postcss: function() {
     return [autoprefixer];

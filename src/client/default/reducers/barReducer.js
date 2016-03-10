@@ -1,5 +1,5 @@
-import * as Actions from '../constants/actions';
-import { fooReceived } from '../actions/foobarActions';
+import * as Actions from 'constants/actions';
+import { fooReceived } from 'actions/foobarActions';
 
 /*eslint no-unused-vars: 0*/
 export default function* barReducer(state, action) {

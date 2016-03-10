@@ -22,6 +22,7 @@ it can be used as a basis for coding new React/Redux projects.
   1. [Application URL router](#application-url-router)
   2. [Side-effects](#side-effects)
   3. [URL history](#url-history)
+  4. [Theme support](#theme-support)
 5. [Quest list](#quest-list)
   1. [Hot reloading](#hot-reloading)
   2. [Clean up webpack configuration](#clean-up-webpack-configuration)
@@ -88,14 +89,14 @@ the server returns the default `index.html` page.
 
 ### Application URL router
 
-The client router `src/client/router.jsx` shows which React component implements which url path.
+The client router `src/client/default/router.jsx` shows which React component implements which url path.
 For instance when the user types into a browser a url path that the server does not know
 and replies with the default `index.html` file content, the client `NotFound` React component
 will render the 404 Page Not Found in the browser.
 
 ### Side-effects
 
-This a simple example of a side effect is in  `src/client/reducers/fooReducer.js`.
+This a simple example of a side effect is in  `src/client/default/reducers/fooReducer.js`.
 
 ### URL history
 
@@ -107,13 +108,36 @@ The application router then gets to select the component
 to render the page based on the new url path.
 No request to the server is made.
 
-See example in `src/client/components/Application.jsx`:
+See example in `src/client/default/components/Application.jsx`:
+
+### Theme support
+
+The boilerplate offers theme support by utilizing webpack's mechanism for resolving modules.
+
+#### Example
+
+? Your code is in `src/client/default`. Say you want to create a theme called "green".
+
+! Create a new folder `src/client/green`.
+
+? Now you want to replace your less-variables for the green theme. You have them in `src/client/default/less/variables.less`.
+
+! Copy the file to `src/client/green/less/variables.less`, and adjust them.
+
+? The "green" theme should show a different text in the `Foo`-component.
+
+! Do the same - copy the file `src/client/default/components/foo.jsx` to the green theme and adjust.
+
+**Important:** You have to allow webpack resolve the module locations for you. This means, don't use relative (or absolute)
+paths. Webpack will resolve them starting with the config's `root` path(s) - and that's how theming works.
+
+Note: After adding new files, you have to restart your (dev)server to introduce them to webpack.
 
 ## Favicon
 
 Favicon did not always function properly. The trick that made the favicon to be picked up by the browser
-was to add the graphics in png format `src/client/static-resources/favicon.png`
-and to modify the `src/client/static-resources/index.html` to let the browser
+was to add the graphics in png format `src/client/default/static-resources/favicon.png`
+and to modify the `src/client/default/static-resources/index.html` to let the browser
 to choose from multiple formats. Like this:
 ```
 <head>
