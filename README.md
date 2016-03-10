@@ -119,6 +119,7 @@ The boilerplate offers theme support by utilizing webpack's mechanism for resolv
 ? Your code is in `src/client/default`. Say you want to create a theme called "green".
 
 ! Create a new folder `src/client/green`.
+! Export an environment variable `export BP_THEME=green`. This will enable the green theme.
 
 ? Now you want to replace your less-variables for the green theme. You have them in `src/client/default/less/variables.less`.
 
