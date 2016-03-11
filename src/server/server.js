@@ -18,7 +18,10 @@ app.get('/hello', (req, res) => res.json({
 }));
 
 app.use((req, res) => {
-  res.sendFile('dist/client/index.html');
+  // TODO:
+  // Using deprecated "sendfile" instead of "sendFile", as the latter doesn't support relative paths.
+  // However, we could probably specify "root" for "sendFile".
+  res.sendfile('dist/client/index.html');
 });
 
 app.listen(process.env.PORT || 3000);
