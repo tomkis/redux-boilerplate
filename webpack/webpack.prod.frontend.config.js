@@ -8,7 +8,8 @@ module.exports = {
   target: 'web',
   output: {
     path: path.join(__dirname, '../dist/client'),
-    filename: 'client.js'
+    filename: 'client.js',
+    publicPath: "/"
   },
   module: {
     preLoaders: [{
