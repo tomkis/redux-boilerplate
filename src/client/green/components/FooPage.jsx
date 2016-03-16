@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import PureComponent from 'react-pure-render/component';
 import { connect } from 'react-redux';
 
-import { fooRequested } from '../actions/foobarActions';
+import { fooRequested } from 'actions/foobarActions';
 
 
 class FooPage extends PureComponent {
@@ -21,7 +21,7 @@ class FooPage extends PureComponent {
     }
     return (
       <div>
-        <h1>Foo</h1>
+        <h1>Foo Green</h1>
         <button {...attrs}>Load</button>
         <br/><br/>
         <div>

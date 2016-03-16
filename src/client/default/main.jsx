@@ -6,10 +6,10 @@ import { compose, createStore, applyMiddleware } from 'redux';
 import { syncHistoryWithStore, routerReducer, routerMiddleware } from 'react-router-redux';
 import { createEffectCapableStore } from 'redux-side-effects';
 
-import masterReducer from './reducers/masterReducer';
-import routes from './routes';
+import masterReducer from 'reducers/masterReducer';
+import routes from 'routes';
 
-import './styl/main.styl';
+import 'styl/main.styl';
 
 const enhancers = [
   applyMiddleware(routerMiddleware(browserHistory)),

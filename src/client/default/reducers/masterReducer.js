@@ -1,7 +1,7 @@
 
-import initialState from './initialState';
-import fooReducer from './fooReducer';
-import barReducer from './barReducer';
+import initialState from 'reducers/initialState';
+import fooReducer from 'reducers/fooReducer';
+import barReducer from 'reducers/barReducer';
 
 export default function* masterReducer(state = initialState, action) {
   state = yield *fooReducer(state, action);
