@@ -1,14 +1,4 @@
-
-// This is for Babel 5.
-{
-  "stage": 0,
-  "optional": "runtime"
-}
-
-/*
-//  This is for Babel 6.
 {
   "presets": ["es2015", "stage-0", "react"],
   "plugins": ["transform-runtime"]
 }
-*/
