@@ -30,7 +30,7 @@ const getDevelopmentWebpackFEConfig = webpackConfig => {
       `webpack-dev-server/client?${SERVER_BASE}:${CLIENT_PORT}`,
       'webpack/hot/only-dev-server', ...webpackConfig.entry
     ],
-    plugins: [new webpack.HotModuleReplacementPlugin()]
+    plugins: [...webpackConfig.plugins, new webpack.HotModuleReplacementPlugin()]
   };
   config.output.publicPath = `${SERVER_BASE}:${CLIENT_PORT}/`;
   return config;

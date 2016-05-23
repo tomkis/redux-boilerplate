@@ -15,12 +15,12 @@ export default {
     preLoaders: [{
       test: /\.js$/,
       loaders: ['eslint'],
-      include: pathConfig.client
+      include: path.join(__dirname, '../src')
     }],
     loaders: [{
       test: /\.js$/,
       loaders: ['babel'],
-      include: pathConfig.client
+      include: path.join(__dirname, '../src')
     }, {
       test: /\.styl$/,
       // the stylus-loader resolves paths in reversed order - so reverse root
