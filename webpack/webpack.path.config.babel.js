@@ -1,4 +1,4 @@
-//==============================================================================
+// ==============================================================================
 // webpack.path.config
 // Path configuration for webpack with theme support.
 const path = require('path');
@@ -6,7 +6,7 @@ const path = require('path');
 const theme = process.env.THEME_FOLDER || false;
 const srcRootPath = path.join(__dirname, '../src/client');
 
-var config = module.exports = {
+const config = {
   themeName: theme,
   // srcRootPath is the root of all client-related sources and contains
   // the `default` and theme-subfolders where the actual code resides.
@@ -22,8 +22,12 @@ var config = module.exports = {
       || path.join(srcRootPath, 'default') // fallback to default if no theme given
 };
 
+export default config;
+
 // theme first...
-(theme && config.root.push(config.theme));
+if (theme) {
+  config.root.push(config.theme);
+}
 
 // ... then default
 config.root.push(config.default);

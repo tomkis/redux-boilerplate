@@ -1,12 +1,11 @@
-/*eslint no-console: 0*/
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 import SingleChild from 'single-child';
 import UrlResolver from 'url';
 import request from 'request';
 
-import webpackBEConfig from './webpack/webpack.backend.config.js';
-import webpackFEConfig from './webpack/webpack.frontend.config.js';
+import webpackBEConfig from './webpack/webpack.backend.config.babel.js';
+import webpackFEConfig from './webpack/webpack.frontend.config.babel.js';
 
 const SERVER_BASE = 'http://localhost';
 const CLIENT_PORT = 3000;
@@ -14,15 +13,13 @@ const API_PORT = 3001;
 
 let server = null;
 
-const getDevelopmentWebpackBEConfig = webpackConfig => {
-  return {
-    ...webpackConfig,
-    debug: true,
-    watch: true,
-    devtool: 'sourcemap',
-    inline: true
-  };
-};
+const getDevelopmentWebpackBEConfig = webpackConfig => ({
+  ...webpackConfig,
+  debug: true,
+  watch: true,
+  devtool: 'sourcemap',
+  inline: true
+});
 
 const getDevelopmentWebpackFEConfig = webpackConfig => {
   const config = {
@@ -72,7 +69,7 @@ webpack(getDevelopmentWebpackBEConfig(webpackBEConfig), (err, stats) => {
     console.info('Starting dev runner');
     server = new SingleChild('node', ['dist/server.js'], {
       stdio: [0, 1, 2],
-      env: {...process.env, NODE_ENV: 'development', PORT: API_PORT}
+      env: { ...process.env, NODE_ENV: 'development', PORT: API_PORT }
     });
     server.start();
   } else {
@@ -105,7 +102,8 @@ app.use('/', (req, res) => {
   req
     .pipe(request(targetUrl))
     .on('error', e => {
-      console.error(`Problems with proxy. Make sure API is running on ${SERVER_BASE}:${API_PORT}`, e);
+      console.error(
+        `Problems with proxy. Make sure API is running on ${SERVER_BASE}:${API_PORT}`, e);
       res
         .status(500)
         .send(e);

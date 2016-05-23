@@ -1,19 +1,16 @@
-/*eslint no-var: 0 */
-var webpack = require('webpack');
-var path = require('path');
-var fs = require('fs');
-var CopyWebpackPlugin = require('copy-webpack-plugin');
+import webpack from 'webpack';
+import path from 'path';
+import fs from 'fs';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
 
-var nodeModules = {};
+const nodeModules = {};
 fs.readdirSync('node_modules')
-  .filter(function(x) {
-    return ['.bin'].indexOf(x) === -1;
-  })
-  .forEach(function(mod) {
-    nodeModules[mod] = 'commonjs ' + mod;
+  .filter(entry => ['.bin'].indexOf(entry) === -1)
+  .forEach(module => {
+    nodeModules[module] = `commonjs ${module}`;
   });
 
-module.exports = {
+export default {
   entry: './src/server/server.js',
   target: 'node',
   output: {
@@ -41,9 +38,7 @@ module.exports = {
       'process.env.NODE_ENV': '"production"'
     }),
     new CopyWebpackPlugin([
-      {from: './src/server/static', to: './client'},
-      //views are not currently used
-      //{from: './src/server/views/', to: './views'},
+      { from: './src/server/static', to: './client' }
     ]),
     new webpack.optimize.UglifyJsPlugin({
       compress: { warnings: false }

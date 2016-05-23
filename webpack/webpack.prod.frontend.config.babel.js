@@ -1,16 +1,15 @@
-/*eslint no-var: 0 */
-var path = require('path');
-var autoprefixer = require('autoprefixer');
-var webpack = require('webpack');
-const pathConfig = require('./webpack.path.config');
+import path from 'path';
+import autoprefixer from 'autoprefixer';
+import webpack from 'webpack';
+import pathConfig from './webpack.path.config.babel';
 
-module.exports = {
-  entry: ['./src/client/default/main.jsx'],
+export default {
+  entry: ['./src/client/default/main.js'],
   target: 'web',
   output: {
     path: path.join(__dirname, '../dist/client'),
     filename: 'client.js',
-    publicPath: "/"
+    publicPath: '/'
   },
   module: {
     preLoaders: [{
@@ -19,27 +18,28 @@ module.exports = {
       include: pathConfig.client
     }],
     loaders: [{
-      test: /\.jsx$|\.js$/,
+      test: /\.js$/,
       loaders: ['babel'],
       include: pathConfig.client
     }, {
       test: /\.styl$/,
       // the stylus-loader resolves paths in reversed order - so reverse root
-      loader: 'style!css?sourceMap!postcss!stylus?paths[]=' + pathConfig.root.slice().reverse().join(',paths[]='),
+      loader: `
+        style!css?sourceMap!postcss!stylus?paths[]=
+        ${pathConfig.root.slice().reverse().join(',paths[]=')}
+      `,
       include: pathConfig.client
     }]
   },
   resolve: {
-    extensions: ['', '.js', '.jsx'],
+    extensions: ['', '.js'],
     root: pathConfig.root,
     alias: {
       default: pathConfig.default,
       theme: pathConfig.theme
     }
   },
-  postcss: function() {
-    return [autoprefixer];
-  },
+  postCss: () => [autoprefixer],
   plugins: [
     /** react and redux must be minified in production env to be build without dev assets
       and to include peformace opts
