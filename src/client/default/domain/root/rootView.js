@@ -14,7 +14,6 @@ const connectView = (View, modelKey, ...nesting) =>
 const ConnectedCounterView = connectView(CounterView, 'counter', 'Counter');
 const ConnectedAsyncView = connectView(AsyncView, 'async', 'Async');
 
-
 export default view(({ history }) => (
   <Router history={history}>
     <Route path="/" component={Template}>

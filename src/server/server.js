@@ -6,7 +6,7 @@ import config from './config';
 
 app.use('/', express.static('dist/client'));
 app.get('/hello', (req, res) => res.json({
-  hello: config.HELLO_MESSAGE
+  hello: config.default.HELLO_MESSAGE
 }));
 
 app.listen(process.env.PORT || 3000);

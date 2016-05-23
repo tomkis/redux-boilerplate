@@ -31,19 +31,19 @@ if (process.env.NODE_ENV === 'development') {
     </DockMonitor>
   );
 
-  const store = buildStore(buildReducer(require('./domain/root/rootUpdater')), DevTools);
+  const store = buildStore(buildReducer(require('./domain/root/rootUpdater').default), DevTools);
   const history = syncHistoryWithStore(browserHistory, store);
 
   // Render block is stored in function so that
   // it's possible to re-render entire app when
   // rootView changes, this is a free operation
   const doRender = () => {
-    const rootView = require('./domain/root/rootView');
+    const rootView = require('./domain/root/rootView').default;
     const Component = buildComponent(rootView, store, history);
 
     const DevTooledComponent = () => (
       <div>
-        {Component}
+        <Component />
         <DevTools store={store} />
       </div>
     );
@@ -59,7 +59,7 @@ if (process.env.NODE_ENV === 'development') {
   if (module.hot) {
     module.hot.accept('./domain/root/rootView', doRender);
     module.hot.accept('./domain/root/rootUpdater', () => {
-      store.replaceReducer(buildReducer(require('./domain/root/rootUpdater')));
+      store.replaceReducer(buildReducer(require('./domain/root/rootUpdater').default));
     });
   }
 
@@ -67,17 +67,17 @@ if (process.env.NODE_ENV === 'development') {
   doRender();
 } else {
   // Production build does not use DevTools.
-  const store = buildStore(buildReducer(require('./domain/root/rootUpdater')));
+  const store = buildStore(buildReducer(require('./domain/root/rootUpdater').default));
   const history = syncHistoryWithStore(browserHistory, store);
 
   const Component = buildComponent(
-    require('./domain/root/rootView'),
+    require('./domain/root/rootView').default,
     store,
     history
   );
 
   render(
-    Component,
+    <Component />,
     document.getElementById('app')
   );
 }
