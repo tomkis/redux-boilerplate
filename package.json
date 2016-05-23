@@ -1,9 +1,9 @@
 {
   "name": "redux-boilerplate",
   "private": true,
-  "description": "React / Redux-side-effects Boilerplate",
+  "description": "React / Redux / Redux-elm Boilerplate",
   "author": "Salsita Software (https://www.salsitasoft.com/)",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "repository": {
     "type": "git",
     "url": "git@github.com:salsita/redux-boilerplate.git"
@@ -21,7 +21,7 @@
     "test_backend_cci": "mocha --reporter mocha-junit-reporter --compilers js:babel/register $(find src/server -path '*.spec.js')",
     "tests": "npm run lint && npm run test_backend_cci && npm run test_frontend",
     "build-artifacts": "tar -czf artifacts.tgz dist node_modules package.json",
-    "create_local_config": "node -e \"var fs = require('fs'); fs.openSync('src/server/config/local.js', 'a')\""
+    "create_local_config": "touch src/server/config/local.js"
   },
   "devDependencies": {
     "autoprefixer": "^6.3.3",
