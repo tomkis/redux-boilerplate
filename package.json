@@ -76,26 +76,22 @@
   "dependencies": {
     "assign-deep": "^0.4.3",
     "babel-runtime": "^5.8.34",
-    "bluebird": "^3.3.3",
     "cookie-parser": "^1.4.1",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
     "history": "1.17.0",
     "immutable": "^3.7.6",
-    "react": "^0.14.7",
+    "react": "^15.1.0",
     "react-document-meta": "^2.0.0",
-    "react-dom": "^0.14.7",
+    "react-dom": "^15.1.0",
     "react-pure-render": "^1.0.2",
     "react-redux": "^4.1.2",
-    "react-router": "^2.0.0",
-    "react-router-redux": "^4.0.0",
+    "react-router": "^2.4.1",
+    "react-router-redux": "^4.0.4",
     "redux": "^3.3.1",
     "redux-elm": "^2.1.1",
     "redux-saga": "^0.10.4",
-    "redux-side-effects": "^0.2.4",
     "serve-favicon": "^2.3.0",
-    "serve-static": "^1.10.0",
-    "superagent": "^1.7.2",
-    "superagent-bluebird-promise": "^3.0.0"
+    "serve-static": "^1.10.0"
   }
 }

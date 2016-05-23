@@ -12,10 +12,12 @@ const config = {
 */
 assignDeep(config, require('./local'));
 
-Object.keys(config).forEach(function(prop) {
-  if (process.env[prop] !== undefined) {
-    config[prop] = process.env[prop];
-  }
-});
+Object
+  .keys(config)
+  .forEach(prop => {
+    if (process.env[prop] !== undefined) {
+      config[prop] = process.env[prop];
+    }
+  });
 
 export default Object.freeze(config);

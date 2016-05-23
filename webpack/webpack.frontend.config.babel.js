@@ -12,10 +12,7 @@ config.module.loaders = [{
 }, {
   test: /\.styl$/,
   // the stylus-loader resolves paths in reversed order - so reverse root
-  loader: `
-    style!css?sourceMap!postcss!stylus?paths[]=
-    ${pathConfig.root.slice().reverse().join(',paths[]=')}
-  `
+  loader: `style!css?sourceMap!postcss!stylus?paths[]=${pathConfig.root.slice().reverse().join(',paths[]=')}`
 }];
 
 // exclude uglify
