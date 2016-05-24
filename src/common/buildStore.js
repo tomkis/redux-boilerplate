@@ -8,27 +8,29 @@ const identity = v => v;
 // may potentially be used from the server,
 // therefore we need to be sure that we are on client
 // by checking type of window
-const getDevTools = DevTools => {
+const getDevTools = () => {
   if (process.env.NODE_ENV === 'development') {
     if (typeof window === 'object' && !!window.devToolsExtension) {
       return window.devToolsExtension();
     } else {
-      if (DevTools) {
-        return DevTools.instrument();
-      } else {
-        return identity;
-      }
+      return identity;
     }
   } else {
     return identity;
   }
 };
 
-export default (reducer, DevTools) => {
+export default (reducer, initialAppState = {
+  root: undefined,
+  routing: undefined
+}) => {
   const storeFactory = compose(
     reduxElm,
-    getDevTools(DevTools)
+    getDevTools()
   )(createStore);
 
-  return storeFactory(reducer);
+  return storeFactory(reducer, {
+    ...initialAppState,
+    routing: undefined
+  });
 };
