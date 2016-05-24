@@ -79,7 +79,7 @@ webpack(getDevelopmentWebpackBEConfig(webpackBEConfig), (err, stats) => {
 });
 
 const app = new WebpackDevServer(webpack(getDevelopmentWebpackFEConfig(webpackFEConfig)), {
-  contentBase: './dist/client',
+  contentBase: false, // We don't want to serve ANY content here, since everything is proxied
   publicPath: '/',
   quiet: false,
   noInfo: false,
