@@ -28,11 +28,22 @@ app.get('*', (req, res) => {
   const routes = buildRouting(history);
 
   match({ history, routes, location: req.url }, (error, redirectLocation, renderProps) => {
-    res.status(200).send(template(renderToString(
-      <Provider store={store}>
-        <RouterContext {...renderProps} />
-      </Provider>
-    ), store.getState()));
+    if (error) {
+      res.status(500).send(error.message);
+    } else if (redirectLocation) {
+      res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+    } else if (renderProps) {
+      res.status(200).send(template(renderToString(
+        <Provider store={store}>
+          <RouterContext {...renderProps} />
+        </Provider>
+      ), store.getState()));
+    } else {
+      res
+        .status(404)
+        .send(process.env.NODE_ENV === 'development' ?
+          'Please, provide wildcard handler for 404 pages' : '');
+    }
   });
 });
 
