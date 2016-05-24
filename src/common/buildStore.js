@@ -13,7 +13,11 @@ const getDevTools = DevTools => {
     if (typeof window === 'object' && !!window.devToolsExtension) {
       return window.devToolsExtension();
     } else {
-      return DevTools.instrument();
+      if (DevTools) {
+        return DevTools.instrument();
+      } else {
+        return identity;
+      }
     }
   } else {
     return identity;
