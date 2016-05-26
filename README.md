@@ -2,19 +2,6 @@
 
 > Universal, react, react-native, redux-elm, react-router, redux-saga ... want more buzzwords?!
 
-This is a very simple example to illustrate the usage of
-[redux-side-effects](https://github.com/salsita/redux-side-effects) with
-[react](https://www.npmjs.com/package/react).
-Together with the pre-configured development tools like
-[eslint](http://eslint.org),
-[webpack](https://github.com/webpack/webpack),
-and testing frameworks like
-[karma](http://karma-runner.github.io/0.13/index.html),
-[mocha](https://github.com/mochajs/mocha), and various other
-[packages](#list-of-dependencies),
-it can be used as a basis for coding new React/Redux projects.
-
-
 1. [Usage](#usage)
 2. [Development](#development)
 3. [Configuration](#configuration)
@@ -42,7 +29,7 @@ Navigate your browser to http://localhost:3000/
 ```
 npm run start:dev
 ```
-Navigate your browser to http://localhost:3001/
+Navigate your browser to http://localhost:3000/
 
 ## Configuration
 
