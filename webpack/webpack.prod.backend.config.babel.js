@@ -3,6 +3,8 @@ import path from 'path';
 import fs from 'fs';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 
+import babelQuery from './babelQuery';
+
 const nodeModules = {};
 fs.readdirSync('node_modules')
   .filter(entry => ['.bin'].indexOf(entry) === -1)
@@ -26,8 +28,9 @@ export default {
     }],
     loaders: [{
       test: /\.js$/,
-      loaders: ['babel'],
-      include: path.join(__dirname, '../src')
+      loader: 'babel',
+      include: path.join(__dirname, '../src'),
+      query: babelQuery
     }]
   },
   resolve: {

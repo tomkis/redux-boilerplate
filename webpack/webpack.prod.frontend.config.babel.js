@@ -1,7 +1,9 @@
 import path from 'path';
 import autoprefixer from 'autoprefixer';
 import webpack from 'webpack';
+
 import pathConfig from './webpack.path.config.babel';
+import babelQuery from './babelQuery';
 
 export default {
   entry: ['./src/client/default/main.js'],
@@ -19,8 +21,9 @@ export default {
     }],
     loaders: [{
       test: /\.js$/,
-      loaders: ['babel'],
-      include: path.join(__dirname, '../src')
+      loader: 'babel',
+      include: path.join(__dirname, '../src'),
+      query: babelQuery
     }, {
       test: /\.styl$/,
       // the stylus-loader resolves paths in reversed order - so reverse root
