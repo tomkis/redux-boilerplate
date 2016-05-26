@@ -12,7 +12,7 @@ function* saga() {
       const greeting = yield call(Effects.helloAsync);
       yield put({ type: 'Fetched', greeting });
     } catch (ex) {
-      console.log('Error while calling API');
+      console.log('Error while calling API', ex);
     }
   });
 }
