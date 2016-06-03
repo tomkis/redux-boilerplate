@@ -3,7 +3,7 @@ import autoprefixer from 'autoprefixer';
 import webpack from 'webpack';
 
 import pathConfig from './webpack.path.config.babel';
-import babelQuery from './babelQuery';
+import babelQuery from '../babel/babelquery';
 
 export default {
   entry: ['./src/client/default/main.js'],

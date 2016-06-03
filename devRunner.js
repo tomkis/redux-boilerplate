@@ -7,6 +7,8 @@ import request from 'request';
 import webpackBEConfig from './webpack/webpack.backend.config.babel.js';
 import webpackFEConfig from './webpack/webpack.frontend.config.babel.js';
 
+process.on('uncaughtException', err => console.error(err));
+
 const SERVER_BASE = 'http://localhost';
 const CLIENT_PORT = 3000;
 const API_PORT = 3001;

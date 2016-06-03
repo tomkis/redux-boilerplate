@@ -31,6 +31,21 @@ npm run start:dev
 ```
 Navigate your browser to http://localhost:3000/
 
+## iOS Development
+First start dev server:
+
+```
+npm run start:dev
+```
+
+Then start native dev server:
+
+```
+npm run start:native
+```
+
+Then open the project (`ios/boilerplate.xcodeproj`) in XCode and run the app in Simulator (or device)
+
 ## Configuration
 
 There is `src/config` which contains production and development settings.
@@ -89,7 +104,7 @@ Note: After adding new files, you have to restart your (dev)server to introduce 
 
 ## Unit tests
 
-You can run tests by running `npm test` or develop them in watch mode by running `npm test:watch`.
+You can run tests by running `npm test` or develop them in watch mode by running `npm run test:watch`.
 Unit tests are shared across client and server.
 
 ## List of dependencies

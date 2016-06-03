@@ -3,7 +3,7 @@ import path from 'path';
 import fs from 'fs';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 
-import babelQuery from './babelQuery';
+import babelQuery from '../babel/babelquery';
 
 const nodeModules = {};
 fs.readdirSync('node_modules')
