@@ -1,4 +1,4 @@
-export default (content, state) => `
+export default (content, state, useCss = false) => `
 <!doctype html>
 <html lang="en">
   <head>
@@ -6,6 +6,7 @@ export default (content, state) => `
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
     <link rel="icon" href="favicon.png" type="image/png" />
     <title>Redux Boilerplate</title>
+    ${useCss ? '<link rel="stylesheet" type="text/css" href="/styles.css" />' : ''}
     <script type="text/javascript">
       window.reduxState = '${JSON.stringify(state)}';
     </script>

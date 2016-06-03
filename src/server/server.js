@@ -37,7 +37,7 @@ app.get('*', (req, res) => {
         <Provider store={store}>
           <RouterContext {...renderProps} />
         </Provider>
-      ), store.getState()));
+      ), store.getState(), process.env.NODE_ENV === 'production'));
     } else {
       res
         .status(404)

@@ -1,6 +1,7 @@
 import path from 'path';
 import autoprefixer from 'autoprefixer';
 import webpack from 'webpack';
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
 
 import pathConfig from './webpack.path.config.babel';
 import babelQuery from '../babel/babelquery';
@@ -25,14 +26,14 @@ export default {
       include: path.join(__dirname, '../src'),
       query: babelQuery
     }, {
+      id: 'css',
       test: /\.styl$/,
-      // the stylus-loader resolves paths in reversed order - so reverse root
-      loader: `style!css?sourceMap!postcss!stylus?paths[]=${pathConfig.root.slice().reverse().join(',paths[]=')}`,
+      loader: ExtractTextPlugin.extract(['css', 'postcss', `stylus?paths[]=${pathConfig.root.slice().reverse().join(',paths[]=')}`]),
       include: pathConfig.client
     }]
   },
   resolve: {
-    extensions: ['', '.js'],
+    extensions: ['', '.js', '.styl'],
     root: pathConfig.root,
     alias: {
       default: pathConfig.default,
@@ -51,6 +52,7 @@ export default {
       compress: {
         warnings: false
       }
-    })
+    }),
+    new ExtractTextPlugin('styles.css')
   ]
 };
