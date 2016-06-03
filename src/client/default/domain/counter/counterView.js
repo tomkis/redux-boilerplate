@@ -1,5 +1,7 @@
 import React from 'react';
 import { view } from 'redux-elm';
 
+import Button from '../../ui/button';
+
 export default view(({ model, dispatch }) =>
-  <button onClick={() => dispatch({ type: 'Increment' })}>Clicked {model}x</button>);
+  <Button text={`Clicked ${model}x`} onClick={() => dispatch({ type: 'Increment' })} />);

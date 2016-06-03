@@ -1,28 +1,13 @@
-import React, { PropTypes } from 'react';
-import { Text, TouchableHighlight, View } from 'react-native';
+import React from 'react';
 import { view } from 'redux-elm';
 
-const Button = ({ onPress, children }) => (
-  <TouchableHighlight onPress={onPress}>
-    <Text>{children}</Text>
-  </TouchableHighlight>
-);
-
-Button.propTypes = {
-  onPress: PropTypes.func.isRequired,
-  children: PropTypes.node.isRequired
-};
+import ViewWrapper from '../../ui/native/viewWrapper.native';
+import Button from '../../ui/native/button.native';
+import Greeting from '../../ui/native/greeting.native';
 
 export default view(({ model, dispatch }) => (
-  <View
-    style={{
-      flex: 1,
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'center'
-    }}
-  >
-    {!model && <Button onPress={() => dispatch({ type: 'Fetch' })}>Fetch</Button>}
-    {!!model && <Text>{model}</Text>}
-  </View>
+  <ViewWrapper>
+    {!model && <Button onPress={() => dispatch({ type: 'Fetch' })} text="Fetch" />}
+    {!!model && <Greeting>{model}</Greeting>}
+  </ViewWrapper>
 ));

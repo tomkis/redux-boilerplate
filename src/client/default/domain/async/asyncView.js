@@ -1,11 +1,13 @@
 import React from 'react';
 import { view } from 'redux-elm';
 
+import AsyncWrapper from '../../ui/asyncWrapper';
 import Greeting from '../../ui/greeting';
+import Button from '../../ui/button';
 
 export default view(({ model, dispatch }) => (
-  <div>
-    {!model && <button onClick={() => dispatch({ type: 'Fetch' })}>Fetch</button>}
+  <AsyncWrapper>
+    {!model && <Button text="Fetch" onClick={() => dispatch({ type: 'Fetch' })} />}
     {!!model && <Greeting>{model}</Greeting>}
-  </div>
+  </AsyncWrapper>
 ));

@@ -1,18 +1,11 @@
 import React from 'react';
-import { Text, TouchableHighlight, View } from 'react-native';
 import { view } from 'redux-elm';
 
+import ViewWrapper from '../../ui/native/viewWrapper.native';
+import Button from '../../ui/native/button.native';
+
 export default view(({ model, dispatch }) => (
-  <View
-    style={{
-      flex: 1,
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'center'
-    }}
-  >
-    <TouchableHighlight onPress={() => dispatch({ type: 'Increment' })}>
-      <Text>Clicked {model}x</Text>
-    </TouchableHighlight>
-  </View>
+  <ViewWrapper>
+    <Button text={`Clicked ${model}x`} onPress={() => dispatch({ type: 'Increment' })} />
+  </ViewWrapper>
 ));
