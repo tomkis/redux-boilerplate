@@ -17,6 +17,10 @@ let server = null;
 
 const getDevelopmentWebpackBEConfig = webpackConfig => ({
   ...webpackConfig,
+  output: {
+    ...webpackConfig.output,
+    filename: 'server-dev.js'
+  },
   debug: true,
   watch: true,
   devtool: 'sourcemap',
@@ -69,7 +73,7 @@ webpack(getDevelopmentWebpackBEConfig(webpackBEConfig), (err, stats) => {
 
   if (!server) {
     console.info('Starting dev runner');
-    server = new SingleChild('node', ['dist/server.js'], {
+    server = new SingleChild('node', ['dist/server-dev.js'], {
       stdio: [0, 1, 2],
       env: { ...process.env, NODE_ENV: 'development', PORT: API_PORT }
     });
