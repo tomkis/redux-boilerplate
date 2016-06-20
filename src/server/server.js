@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import { match, RouterContext } from 'react-router';
 import createMemoryHistory from 'history/lib/createMemoryHistory';
 import { syncHistoryWithStore } from 'react-router-redux';
+import 'isomorphic-fetch';
 
 import buildStore from '../common/buildStore';
 import buildReducer from '../common/buildReducer';
@@ -22,10 +23,17 @@ app.get('/hello', (req, res) => res.json({
   hello: config.default.HELLO_MESSAGE
 }));
 
+app.get('/initial-counter', (req, res) => res.json({
+  value: Math.round(Math.random() * 10)
+}));
+
+
 app.get('*', (req, res) => {
   const store = buildStore(buildReducer(rootUpdater));
   const history = syncHistoryWithStore(createMemoryHistory(), store);
-  const routes = buildRouting(history);
+  const routes = buildRouting(history, store.dispatch);
+
+  store.dispatch({ type: '@@redux-elm/Mount' });
 
   match({ history, routes, location: req.url }, (error, redirectLocation, renderProps) => {
     if (error) {
@@ -33,11 +41,38 @@ app.get('*', (req, res) => {
     } else if (redirectLocation) {
       res.redirect(302, redirectLocation.pathname + redirectLocation.search);
     } else if (renderProps) {
-      res.status(200).send(template(renderToString(
+      const render = () => renderToString(
         <Provider store={store}>
           <RouterContext {...renderProps} />
         </Provider>
-      ), store.getState(), process.env.NODE_ENV === 'production'));
+      );
+
+      const timeout = setTimeout(() =>
+        res
+          .status(500)
+          .send('Request has timed out'),
+        1000
+      );
+
+      const unsubscribe = store.subscribe(() => {
+        const { root: { prefetched } } = store.getState();
+
+        if (prefetched) {
+          clearTimeout(timeout);
+          unsubscribe();
+
+          store.dispatch({ type: 'SuppressFetching' });
+
+          res
+            .status(200)
+            .send(template(
+              render(),
+              store.getState(),
+              process.env.NODE_ENV === 'production'));
+        }
+      });
+
+      render();
     } else {
       res
         .status(404)

@@ -4,4 +4,5 @@ export const initialModel = 0;
 
 export default new Updater(initialModel)
   .case('Increment', model => model + 1)
+  .case('Fetched', (model, { data }) => data)
   .toReducer();
