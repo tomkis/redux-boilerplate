@@ -51,7 +51,7 @@ app.get('*', (req, res) => {
         res
           .status(500)
           .send('Request has timed out'),
-        1000
+        5000
       );
 
       const unsubscribe = store.subscribe(() => {
@@ -61,8 +61,13 @@ app.get('*', (req, res) => {
           clearTimeout(timeout);
           unsubscribe();
 
+          // We want to suppress fetching here since
+          // data has already been fetched, we want to
+          // re-enable data fetching once it's rendered on Client
           store.dispatch({ type: 'SuppressFetching' });
 
+          // Here comes the second render
+          // which renders Component with appropriately fetched data
           res
             .status(200)
             .send(template(
@@ -72,6 +77,7 @@ app.get('*', (req, res) => {
         }
       });
 
+      // First render is mandatory to initiate data fetching
       render();
     } else {
       res

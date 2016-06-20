@@ -16,6 +16,14 @@ const initialModel = {
 
 function* fetchingSaga() {
   yield* takeEvery('UrlHasChanged', function*({ route }) {
+    // Here's a lock which prevents from Fetching,
+    // this is especially very handy in two situations:
+    //
+    // 1) when component is first rendered on Client
+    // 2) 2nd render call on the server
+    //
+    // because data has already been fetched on the server
+    // and there is no need to re-fetch it again.
     const canFetch = yield select(model => model.canFetch);
 
     if (canFetch) {
@@ -36,6 +44,9 @@ function* fetchingSaga() {
         yield put({ type: 'Prefetched' });
       }
     } else {
+      // We need to release the lock because once app
+      // runs on the Client and URL has already been changed (1st render)
+      // we want to re-enable data fetching when URL changes
       yield put({ type: 'ClearSuppressFetching' });
     }
   });
