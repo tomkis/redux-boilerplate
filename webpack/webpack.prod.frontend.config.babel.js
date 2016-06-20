@@ -45,9 +45,6 @@ export default {
     /** react and redux must be minified in production env to be build without dev assets
       and to include peformace opts
     */
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': '"production"'
-    }),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false

@@ -74,8 +74,7 @@ webpack(getDevelopmentWebpackBEConfig(webpackBEConfig), (err, stats) => {
   if (!server) {
     console.info('Starting dev runner');
     server = new SingleChild('node', ['dist/server-dev.js'], {
-      stdio: [0, 1, 2],
-      env: { ...process.env, NODE_ENV: 'development', PORT: API_PORT }
+      stdio: [0, 1, 2]
     });
     server.start();
   } else {

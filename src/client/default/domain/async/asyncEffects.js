@@ -1,4 +1,4 @@
-export const helloAsync = () => fetch('http://localhost:3000/hello')
+export const helloAsync = () => fetch(`${process.env.API_BASE}/hello`)
   .then(response => {
     if (response.status > 400) {
       throw new Error('Error while fetching from the server');
