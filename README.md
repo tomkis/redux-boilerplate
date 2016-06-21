@@ -139,5 +139,5 @@ This is a brief description what we depend on and why:
 * `redux` - State container
 * `redux-react` React binding for Redux
 * `react-router-redux` - React Router binding for Redux
-* `redux-elm` - **The best library ever**
+* `redux-elm` - The Elm Architecture in JavaScript
 * `redux-saga` - Side Effects & Long Running Transactions for Redux
