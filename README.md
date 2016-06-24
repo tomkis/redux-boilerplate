@@ -27,9 +27,6 @@ Navigate your browser to http://localhost:3000/
 
 ## Development
 ```
-export NODE_ENV=development
-export API_BASE=http://localhost:3000
-export PORT=3001
 npm run start:dev
 ```
 Navigate your browser to http://localhost:3000/
@@ -38,16 +35,12 @@ Navigate your browser to http://localhost:3000/
 First start dev server:
 
 ```
-export NODE_ENV=development
-export API_BASE=http://localhost:3000
-export PORT=3001
 npm run start:dev
 ```
 
 Then start native dev server:
 
 ```
-export API_BASE=http://localhost:3000
 npm run start:native
 ```
 
